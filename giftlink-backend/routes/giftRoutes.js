@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         const gifts = await collection.find({}).toArray();
 
         // Task 4: return the gifts using the res.json method
-        return res.json(gifts);
+        return res.status(200).json(gifts);
     } catch (e) {
         console.error('Error fetching gifts:', e);
         res.status(500).send('Error fetching gifts');
@@ -23,18 +23,18 @@ router.get('/:id', async (req, res) => {
         const db = await connectToDatabase();
 
         // Task 2: use the collection() method to retrieve the gift collection
-        // {{insert code here}}
+        const collection = db.collection("gifts");
 
         const id = req.params.id;
 
         // Task 3: Find a specific gift by ID using the collection.fineOne method and store in constant called gift
-        // {{insert code here}}
+        const gift = await collection.findOne({ id: id });
 
         if (!gift) {
             return res.status(404).send('Gift not found');
         }
 
-        res.json(gift);
+        return res.status(200).json(gift);
     } catch (e) {
         console.error('Error fetching gift:', e);
         res.status(500).send('Error fetching gift');
